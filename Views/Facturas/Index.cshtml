@@ -1,0 +1,116 @@
+﻿@model FacturasViewModel
+@{
+    ViewData["Title"] = "Index";
+}
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>Factura</title>
+        <link rel="stylesheet" type="text/css" href="~/css/styles.css" />
+    </head>
+    <body>
+        <div>
+            @*<form method="post" asp-action="GuardarFactura">*@
+                <div class="label-and-button">
+                    <label>Nueva factura:</label>
+                    <button id="nuevo">Nuevo</button>
+                </div>
+
+                <div style="float: left; width: 45%;">
+                    <label for="cliente">Cliente:</label><br />
+                    <select id="razonSocial" name="razonSocial">
+                        <option value="">Seleccione una razón social</option>
+                        @foreach (var razonSocial in Model.RazonesSociales)
+                        {
+                            <option value="@razonSocial">@razonSocial</option>
+                        }
+                    </select>
+                </div>
+
+                <div style="float: right; width: 45%;">
+                    <label for "numero-factura">Número de Factura:</label><br />
+                    <input type="number" id="numero-factura" min="1">
+                </div>
+                <div style="clear: both;"></div>
+
+                <br />
+
+                <button id="agregar-producto" style="float: left;">Agregar Producto</button>
+                <br /><br />
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Producto</th>
+                            <th>Precio Unitario</th>
+                            <th>Imagen</th>
+                            <th>Cantidad</th>
+                            <th>Totales</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr id="fila-producto">
+                            <td>
+                                <select id="nombreProducto" name="nombreProducto">
+                                    @if (Model.Productos != null && Model.Productos.Any())
+                                    {
+                                        @foreach (var producto in Model.Productos)
+                                        {
+                                            <option value="@producto.NombreProducto">@producto.NombreProducto</option>
+                                        }
+                                    }
+                                </select>
+                            </td>
+                            <td>
+                                @if (Model.Productos != null && Model.Productos.Any())
+                                {
+                                    <span class="precioUnitario">@Model.Productos.First().PrecioUnitario</span>
+                                }
+                            </td>
+                            <td>
+                                @if (Model.Productos != null && Model.Productos.Any())
+                                {
+                                    <img class="imagen-producto" src="data:image/jpeg;base64,@Convert.ToBase64String(Model.Productos.First().ImagenProducto)" alt="Imagen del producto" />
+                                }
+                            </td>
+                            <td>
+                                <input type="number" name="cantidad" class="cantidad">
+                            </td>
+                            <td>
+                                <input type="number" name="total" class="total" readonly>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <br />
+                <table border="1" style="width: 50%;" align="right" id="segunda-tabla">
+                    <tr>
+                        <td>Sub Total</td>
+                        <td><input type="number" id="subtotal" readonly></td>
+                    </tr>
+
+                    <tr>
+                        <td>Impuesto (19%)</td>
+                        <td><input type="number" id="impuestos" readonly></td>
+                    </tr>
+
+                    <tr>
+                        <td>Total</td>
+                        <td><input type="number" id="total" readonly></td>
+                    </tr>
+                </table>
+
+                <div style="clear: both;"></div>
+                <button style="float: left;">Guardar</button>
+                <br />
+                <br />
+            @*</form>*@
+        </div>
+        <script src="~/js/agregarDetallePcto.js"></script>
+        <script src="~/js/limpiarDatos.js"></script>
+        <script src="~/js/agregaDatosProducto.js"></script>
+    </body>
+</html>

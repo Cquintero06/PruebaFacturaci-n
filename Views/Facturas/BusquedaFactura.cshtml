@@ -1,0 +1,75 @@
+﻿@model FacturasViewModel
+@{
+    ViewData["Title"] = "Busqueda Factura";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Búsqueda de Facturas</title>
+    <link rel="stylesheet" type="text/css" href="~/css/styles.css" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+</head>
+<body>
+    <div>
+
+        <div>
+            <label for="tipo-busqueda">Tipo de Búsqueda:</label>
+            <input type="radio" id="tipo-busqueda-cliente" name="tipo-busqueda" value="cliente">
+            <label for="tipo-busqueda-cliente">Cliente</label>
+            <input type="radio" id="tipo-busqueda-factura" name="tipo-busqueda" value="factura">
+            <label for="tipo-busqueda-cliente">Numero Factura</label>
+        </div><br />
+
+        <div style="float: left; width: 45%;">
+            <label for="cliente">Cliente:</label><br />
+            <select id="razonSocial" name="razonSocial">
+                <option value="">Seleccione una razón social</option>
+                @foreach (var razonSocial in Model.RazonesSociales)
+                {
+                    <option value="@razonSocial">@razonSocial</option>
+                }
+            </select>
+        </div>
+
+        <div style="float: right; width: 45%;">
+            <label for="numero-factura">Número de Factura:</label><br />
+            <input type="number" id="numero-factura" min="1">
+        </div>
+        <div style="clear: both;"></div>
+
+    </div>
+    <br />
+    <button id="buscar-factura">Buscar</button>
+    <br />
+    <br />
+
+    <div id="resultados-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Número de Factura</th>
+                    <th>Fecha de Emisión</th>
+                    <th>Total Facturado</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var factura in Model.FacturasList)
+                {
+                    <tr>
+                        <td>@factura.NumeroFactura</td>
+                        <td>@factura.FechaEmisionFactura.ToString("yyyy-MM-dd")</td>
+                        <td>@string.Format("{0:C}", factura.TotalFactura)</td>
+                    </tr>
+                }
+            </tbody>
+
+        </table>
+    </div>
+
+    <script src="~/js/gestionarBusqueda.js"></script>
+    </body>
+</html>
+
